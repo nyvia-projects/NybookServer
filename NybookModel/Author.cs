@@ -9,11 +9,11 @@ namespace NybookModel;
 [Table("Author")]
 public partial class Author
 {
-   
+
     public int Id { get; set; }
 
     [Column("name")]
-    [StringLength(10)]
+    [StringLength(50)]
     public string Name { get; set; } = null!;
 
     [Column("age")]
@@ -22,6 +22,6 @@ public partial class Author
     [Column("rating")]
     public int Rating { get; set; }
 
-  
+
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }

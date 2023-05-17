@@ -9,12 +9,12 @@ namespace NybookModel;
 [Table("Book")]
 public partial class Book
 {
-   
-   
+
+
     public int Id { get; set; }
 
     [Column("title")]
-    [StringLength(50)]
+    [StringLength(75)]
     public string Title { get; set; } = null!;
 
     [Column("year")]
@@ -27,6 +27,6 @@ public partial class Book
     public int AuthorId { get; set; }
 
     [ForeignKey("AuthorId")]
-    
+
     public virtual Author Author { get; set; } = null!;
 }

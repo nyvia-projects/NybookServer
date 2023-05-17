@@ -107,41 +107,41 @@ namespace NybookApi.Controllers
             // Create authors
             Author author1 = new Author
             {
-                Name = "Author 1",
-                Age = 30,
+                Name = "J.K. Rowling",
+                Age = 56,
                 Rating = 5
             };
             _context.Authors.Add(author1);
 
             Author author2 = new Author
             {
-                Name = "Author 2",
-                Age = 35,
+                Name = "Stephen King",
+                Age = 74,
                 Rating = 4
             };
             _context.Authors.Add(author2);
 
             Author author3 = new Author
             {
-                Name = "Author 3",
-                Age = 40,
-                Rating = 3
+                Name = "Agatha Christie",
+                Age = 85,
+                Rating = 4
             };
             _context.Authors.Add(author3);
 
             Author author4 = new Author
             {
-                Name = "Author 4",
-                Age = 45,
-                Rating = 2
+                Name = "Harper Lee",
+                Age = 89,
+                Rating = 3
             };
             _context.Authors.Add(author4);
 
             Author author5 = new Author
             {
-                Name = "Author 5",
-                Age = 50,
-                Rating = 1
+                Name = "George Orwell",
+                Age = 46,
+                Rating = 5
             };
             _context.Authors.Add(author5);
 
@@ -150,20 +150,20 @@ namespace NybookApi.Controllers
             // Create books
             Book book1 = new Book
             {
-                Title = "Book 1",
-                Year = 2021,
+                Title = "Harry Potter and the Philosopher's Stone",
+                Year = 1997,
                 Rating = 4,
                 AuthorId = author1.Id,
                 Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book1);
-            addedBookList.Add(book1);
+
 
             Book book2 = new Book
             {
-                Title = "Book 2",
-                Year = 2019,
-                Rating = 3,
+                Title = "The Shining",
+                Year = 1977,
+                Rating = 4,
                 AuthorId = author2.Id,
                 Author = null // Set the Author property to null to avoid circular reference
             };
@@ -172,8 +172,8 @@ namespace NybookApi.Controllers
 
             Book book3 = new Book
             {
-                Title = "Book 3",
-                Year = 2017,
+                Title = "Murder on the Orient Express",
+                Year = 1934,
                 Rating = 5,
                 AuthorId = author3.Id,
                 Author = null // Set the Author property to null to avoid circular reference
@@ -183,9 +183,9 @@ namespace NybookApi.Controllers
 
             Book book4 = new Book
             {
-                Title = "Book 4",
-                Year = 2015,
-                Rating = 2,
+                Title = "To Kill a Mockingbird",
+                Year = 1960,
+                Rating = 5,
                 AuthorId = author4.Id,
                 Author = null // Set the Author property to null to avoid circular reference
             };
@@ -194,9 +194,9 @@ namespace NybookApi.Controllers
 
             Book book5 = new Book
             {
-                Title = "Book 5",
-                Year = 2013,
-                Rating = 1,
+                Title = "1984",
+                Year = 1949,
+                Rating = 5,
                 AuthorId = author5.Id,
                 Author = null // Set the Author property to null to avoid circular reference
             };

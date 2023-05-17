@@ -17,20 +17,36 @@ namespace NybookApi.Controllers
             _context = context;
         }
 
-        // GET: api/Authors
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthors()
         {
-            List<Author> authors = await _context.Authors.ToListAsync();
+            var authors = await _context.Authors
+                .Select(a => new AuthorDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Age = a.Age,
+                    Rating = a.Rating
+                })
+                .ToListAsync();
             return authors;
         }
 
-        // GET: api/Authors/5
+        
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public async Task<ActionResult<AuthorDto>> GetAuthor(int id)
         {
-            Author author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors
+                .Select(a => new AuthorDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Age = a.Age,
+                    Rating = a.Rating
+                })
+                .SingleOrDefaultAsync(a => a.Id == id);
+
             if (author == null)
             {
                 return NotFound();
@@ -39,12 +55,22 @@ namespace NybookApi.Controllers
             return author;
         }
 
-        // GET: api/Authors/Works/5
         [HttpGet("Works/{id}")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetAuthorWorks(int id)
+        public async Task<ActionResult<IEnumerable<BookDto>>> GetAuthorWorks(int id)
         {
-            List<Book> authorBooks = await _context.Books.Where(b => b.AuthorId == id).ToListAsync();
-            if (authorBooks == null || authorBooks.Count == 0)
+            var authorBooks = await _context.Books
+                .Where(b => b.AuthorId == id)
+                .Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Year = b.Year,
+                    Rating = b.Rating,
+                    AuthorId = b.AuthorId
+                })
+                .ToListAsync();
+
+            if (!authorBooks.Any())
             {
                 return NotFound();
             }
@@ -52,49 +78,33 @@ namespace NybookApi.Controllers
             return authorBooks;
         }
 
-        // PUT: api/Authors/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
-        {
-            if (id != author.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Authors
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public async Task<ActionResult<AuthorDto>> PostAuthor(AuthorDto authorDto)
         {
+            var author = new Author
+            {
+                Name = authorDto.Name,
+                Age = authorDto.Age,
+                Rating = authorDto.Rating
+            };
+
             _context.Authors.Add(author);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            return CreatedAtAction("GetAuthor", new { id = author.Id }, new AuthorDto
+            {
+                Id = author.Id,
+                Name = author.Name,
+                Age = author.Age,
+                Rating = author.Rating
+            });
         }
 
-        // DELETE: api/Authors/5
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            Author author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
             if (author == null)
             {
                 return NotFound();

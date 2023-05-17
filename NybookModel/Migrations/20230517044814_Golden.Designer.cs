@@ -12,8 +12,8 @@ using NybookModel;
 namespace NybookModel.Migrations
 {
     [DbContext(typeof(NybooksContext))]
-    [Migration("20230517024633_Identity")]
-    partial class Identity
+    [Migration("20230517044814_Golden")]
+    partial class Golden
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,8 +203,8 @@ namespace NybookModel.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nchar(75)")
                         .HasColumnName("title")
                         .IsFixedLength();
 

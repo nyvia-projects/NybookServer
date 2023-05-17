@@ -37,7 +37,7 @@ public partial class NybooksContext : IdentityDbContext<NybooksUser>
         {
             entity.Property(e => e.Title).IsFixedLength();
 
-                    });
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }
