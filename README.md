@@ -1,1 +1,3 @@
-# WorldCitiesApi
+# Nybook API
+
+Implemented Authentication
