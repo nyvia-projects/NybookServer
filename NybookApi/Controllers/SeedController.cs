@@ -1,86 +1,56 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using CsvHelper.Configuration;
-using WorldCitiesApi.Data;
-using WorldModel;
-using CsvReader = CsvHelper.CsvReader;
+using NybookModel;
 
-namespace WorldCitiesApi.Controllers {
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+
+namespace NybookApi.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class SeedController : ControllerBase {
-        private readonly UserManager<WorldCitiesUser> _userManager;
+    public class SeedController : ControllerBase
+    {
+        private readonly UserManager<NybooksUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-        private readonly WorldCitiesContext _context;
-        private readonly string _pathName;
+        private readonly NybooksContext _context;
 
-        public SeedController(UserManager<WorldCitiesUser> userManager, RoleManager<IdentityRole> roleManager, 
-            IConfiguration configuration, WorldCitiesContext context, IHostEnvironment environment)
+        public SeedController(UserManager<NybooksUser> userManager, RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration, NybooksContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _context = context;
-            _pathName = Path.Combine(environment.ContentRootPath, "Data/worldcities.csv");
-        }
-
-        // POST: api/Seed
-        [HttpPost("Countries")]
-        public async Task<IActionResult> ImportCountries() {
-            // create a lookup dictionary containing all the countries already existing 
-            // into the Database (it will be empty on first run).
-            Dictionary<string, Country> countriesByName = _context.Countries
-                .AsNoTracking().ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
-
-            CsvConfiguration config = new(CultureInfo.InvariantCulture) {
-                HasHeaderRecord = true,
-                HeaderValidated = null
-            };
-
-            using StreamReader reader = new(_pathName);
-            using CsvReader csv = new(reader, config);
-
-            IEnumerable<WorldCitiesCsv>? records = csv.GetRecords<WorldCitiesCsv>();
-            foreach (WorldCitiesCsv record in records) {
-                if (countriesByName.ContainsKey(record.country)) {
-                    continue;
-                }
-
-                Country country = new() {
-                    Name = record.country,
-                    Iso2 = record.iso2,
-                    Iso3 = record.iso3
-                };
-                await _context.Countries.AddAsync(country);
-                countriesByName.Add(record.country, country);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return new JsonResult(countriesByName.Count);
         }
 
 
         [HttpPost("Users")]
-        public async Task<IActionResult> ImportUsers() {
+        public async Task<IActionResult> ImportUsers()
+        {
             const string roleUser = "RegisteredUser";
             const string roleAdmin = "Administrator";
 
-            if (await _roleManager.FindByNameAsync(roleUser) is null) {
+            if (await _roleManager.FindByNameAsync(roleUser) is null)
+            {
                 await _roleManager.CreateAsync(new IdentityRole(roleUser));
             }
-            if (await _roleManager.FindByNameAsync(roleAdmin) is null) {
+            if (await _roleManager.FindByNameAsync(roleAdmin) is null)
+            {
                 await _roleManager.CreateAsync(new IdentityRole(roleAdmin));
             }
 
-            List<WorldCitiesUser> addedUserList = new();
+            List<NybooksUser> addedUserList = new();
             (string name, string email) = ("admin", "admin@email.com");
 
-            if (await _userManager.FindByNameAsync(name) is null) {
-                WorldCitiesUser userAdmin = new() {
+            if (await _userManager.FindByNameAsync(name) is null)
+            {
+                NybooksUser userAdmin = new()
+                {
                     UserName = name,
                     Email = email,
                     SecurityStamp = Guid.NewGuid().ToString()
@@ -95,8 +65,10 @@ namespace WorldCitiesApi.Controllers {
 
             (string name, string email) registered = ("user", "user@email.com");
 
-            if (await _userManager.FindByNameAsync(registered.name) is null) {
-                WorldCitiesUser user = new() {
+            if (await _userManager.FindByNameAsync(registered.name) is null)
+            {
+                NybooksUser user = new()
+                {
                     UserName = registered.name,
                     Email = registered.email,
                     SecurityStamp = Guid.NewGuid().ToString()
@@ -109,15 +81,131 @@ namespace WorldCitiesApi.Controllers {
                 addedUserList.Add(user);
             }
 
-            if (addedUserList.Count > 0) {
+            if (addedUserList.Count > 0)
+            {
                 await _context.SaveChangesAsync();
             }
 
-            return new JsonResult(new {
+            // Seed quotes and authors
+            // await ImportAuthorsAndBooks();
+
+            return new JsonResult(new
+            {
                 addedUserList.Count,
                 Users = addedUserList
             });
+        }
+
+        [HttpPost("AuthorsAndBooks")]
+        public async Task<IActionResult> ImportAuthorsAndBooks()
+        {
+            // Create a list to store added books
+            List<Book> addedBookList = new List<Book>();
+
+            // Create authors
+            Author author1 = new Author
+            {
+                Name = "Author 1",
+                Age = 30,
+                Rating = 5
+            };
+            _context.Authors.Add(author1);
+
+            Author author2 = new Author
+            {
+                Name = "Author 2",
+                Age = 35,
+                Rating = 4
+            };
+            _context.Authors.Add(author2);
+
+            Author author3 = new Author
+            {
+                Name = "Author 3",
+                Age = 40,
+                Rating = 3
+            };
+            _context.Authors.Add(author3);
+
+            Author author4 = new Author
+            {
+                Name = "Author 4",
+                Age = 45,
+                Rating = 2
+            };
+            _context.Authors.Add(author4);
+
+            Author author5 = new Author
+            {
+                Name = "Author 5",
+                Age = 50,
+                Rating = 1
+            };
+            _context.Authors.Add(author5);
+
+            await _context.SaveChangesAsync();
+
+            // Create books
+            Book book1 = new Book
+            {
+                Title = "Book 1",
+                Year = 2021,
+                Rating = 4,
+                AuthorId = author1.Id
+            };
+            _context.Books.Add(book1);
+            addedBookList.Add(book1);
+
+            Book book2 = new Book
+            {
+                Title = "Book 2",
+                Year = 2019,
+                Rating = 3,
+                AuthorId = author2.Id
+            };
+            _context.Books.Add(book2);
+            addedBookList.Add(book2);
+
+            Book book3 = new Book
+            {
+                Title = "Book 3",
+                Year = 2017,
+                Rating = 5,
+                AuthorId = author3.Id
+            };
+            _context.Books.Add(book3);
+            addedBookList.Add(book3);
+
+            Book book4 = new Book
+            {
+                Title = "Book 4",
+                Year = 2015,
+                Rating = 2,
+                AuthorId = author4.Id
+            };
+            _context.Books.Add(book4);
+            addedBookList.Add(book4);
+
+            Book book5 = new Book
+            {
+                Title = "Book 5",
+                Year = 2013,
+                Rating = 1,
+                AuthorId = author5.Id
+            };
+            _context.Books.Add(book5);
+            addedBookList.Add(book5);
+
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(new
+            {
+                addedBookList.Count,
+                Books = addedBookList
+            });
 
         }
+
     }
+
 }

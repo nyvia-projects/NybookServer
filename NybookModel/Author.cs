@@ -9,8 +9,7 @@ namespace NybookModel;
 [Table("Author")]
 public partial class Author
 {
-    [Key]
-    [Column("id")]
+   
     public int Id { get; set; }
 
     [Column("name")]
@@ -23,6 +22,6 @@ public partial class Author
     [Column("rating")]
     public int Rating { get; set; }
 
-    [InverseProperty("Author")]
+  
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }

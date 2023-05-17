@@ -1,4 +1,4 @@
-﻿namespace WorldCitiesApi.Data {
+﻿namespace NybookApi.Data {
     public class WorldCitiesCsv {
         public string city { get; set; } = null!;
         public string city_ascii { get; set; } = null!;

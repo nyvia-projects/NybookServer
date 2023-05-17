@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using WorldCitiesApi.Dtos;
-using WorldModel;
+using NybookApi.Dtos;
+using NybookModel;
 
-namespace WorldCitiesApi.Controllers
+namespace NybookApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<WorldCitiesUser> _userManager;
+        private readonly UserManager<NybooksUser> _userManager;
         private readonly JwtHandler _jwtHandler;
 
-        public AccountController(UserManager<WorldCitiesUser> userManager, JwtHandler jwtHandler)
+        public AccountController(UserManager<NybooksUser> userManager, JwtHandler jwtHandler)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
@@ -22,7 +22,7 @@ namespace WorldCitiesApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            WorldCitiesUser? user = await _userManager.FindByNameAsync(loginRequest.UserName);
+            NybooksUser? user = await _userManager.FindByNameAsync(loginRequest.UserName);
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginRequest.Password)) {
                 return Unauthorized(new LoginResult {
                     Success = false,

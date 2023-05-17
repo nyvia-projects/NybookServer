@@ -3,18 +3,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WorldModel;
+using NybookModel;
 
-namespace WorldCitiesApi {
+namespace NybookApi {
     public class JwtHandler {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<WorldCitiesUser> _userManager;
-        public JwtHandler(IConfiguration configuration, UserManager<WorldCitiesUser> userManager) {
+        private readonly UserManager<NybooksUser> _userManager;
+        public JwtHandler(IConfiguration configuration, UserManager<NybooksUser> userManager) {
             _configuration = configuration;
             _userManager = userManager;
         }
 
-        public async Task<JwtSecurityToken> GetTokenAsync(WorldCitiesUser user) =>
+        public async Task<JwtSecurityToken> GetTokenAsync(NybooksUser user) =>
             new(
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
@@ -28,7 +28,7 @@ namespace WorldCitiesApi {
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaimsAsync(WorldCitiesUser user) {
+        private async Task<List<Claim>> GetClaimsAsync(NybooksUser user) {
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.Name, user.UserName!)

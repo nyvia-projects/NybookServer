@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using WorldCitiesApi;
-using WorldModel;
+using NybookApi;
+using NybookModel;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +18,12 @@ builder.Services.AddSwaggerGen(c => {
     {
         Contact = new()
         {
-            Email = "frabinovich@csun.edu",
-            Name = "Felix Rabinovich",
+            Email = "gevorg.atoyan.117@my.csun.edu",
+            Name = "Gevorg Atoyan",
             Url = new("https://canvas.csun.edu/courses/128137")
         },
-        Description = "APIs for World Cities",
-        Title = "World Cities APIs",
+        Description = "APIs for Nybooks",
+        Title = "Nybooks Author-Books API",
         Version = "V1"
     });
     OpenApiSecurityScheme jwtSecurityScheme = new() {
@@ -46,11 +46,11 @@ builder.Services.AddSwaggerGen(c => {
         }
     });
 });
-builder.Services.AddDbContext<WorldCitiesContext>(optionsBuilder =>
+builder.Services.AddDbContext<NybooksContext>(optionsBuilder =>
     optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<WorldCitiesUser, IdentityRole>()
-    .AddEntityFrameworkStores<WorldCitiesContext>();
+builder.Services.AddIdentity<NybooksUser, IdentityRole>()
+    .AddEntityFrameworkStores<NybooksContext>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

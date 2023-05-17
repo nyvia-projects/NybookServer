@@ -1,4 +1,4 @@
-namespace WorldCitiesApi;
+namespace NybookApi;
 
 public class WeatherForecast
 {
