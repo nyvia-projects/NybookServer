@@ -5,6 +5,8 @@ using NybookModel;
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -151,7 +153,8 @@ namespace NybookApi.Controllers
                 Title = "Book 1",
                 Year = 2021,
                 Rating = 4,
-                AuthorId = author1.Id
+                AuthorId = author1.Id,
+                Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book1);
             addedBookList.Add(book1);
@@ -161,7 +164,8 @@ namespace NybookApi.Controllers
                 Title = "Book 2",
                 Year = 2019,
                 Rating = 3,
-                AuthorId = author2.Id
+                AuthorId = author2.Id,
+                Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book2);
             addedBookList.Add(book2);
@@ -171,7 +175,8 @@ namespace NybookApi.Controllers
                 Title = "Book 3",
                 Year = 2017,
                 Rating = 5,
-                AuthorId = author3.Id
+                AuthorId = author3.Id,
+                Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book3);
             addedBookList.Add(book3);
@@ -181,7 +186,8 @@ namespace NybookApi.Controllers
                 Title = "Book 4",
                 Year = 2015,
                 Rating = 2,
-                AuthorId = author4.Id
+                AuthorId = author4.Id,
+                Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book4);
             addedBookList.Add(book4);
@@ -191,20 +197,28 @@ namespace NybookApi.Controllers
                 Title = "Book 5",
                 Year = 2013,
                 Rating = 1,
-                AuthorId = author5.Id
+                AuthorId = author5.Id,
+                Author = null // Set the Author property to null to avoid circular reference
             };
             _context.Books.Add(book5);
             addedBookList.Add(book5);
 
             await _context.SaveChangesAsync();
 
-            return new JsonResult(new
+            var serializerOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+
+            string json = JsonSerializer.Serialize(new
             {
                 addedBookList.Count,
                 Books = addedBookList
-            });
+            }, serializerOptions);
 
+            return Content(json, "application/json");
         }
+
 
     }
 
