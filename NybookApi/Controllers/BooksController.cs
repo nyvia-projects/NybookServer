@@ -17,7 +17,7 @@ namespace NybookApi.Controllers
             _context = context;
         }
 
-        // GET: api/Books
+        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
@@ -27,6 +27,8 @@ namespace NybookApi.Controllers
                 {
                     Id = b.Id,
                     Title = b.Title,
+                    Year = b.Year,
+                    Rating = b.Rating,
                     AuthorId = b.AuthorId
                 })
                 .ToListAsync();
@@ -34,7 +36,7 @@ namespace NybookApi.Controllers
             return books;
         }
 
-        // GET: api/Books/5
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<BookDto>> GetBook(int id)
         {
@@ -49,13 +51,15 @@ namespace NybookApi.Controllers
             {
                 Id = book.Id,
                 Title = book.Title,
+                Year = book.Year,
+                Rating = book.Rating,
                 AuthorId = book.AuthorId
             };
 
             return bookDto;
         }
 
-        // PUT: api/Books/5
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, BookDto bookDto)
         {
@@ -93,6 +97,8 @@ namespace NybookApi.Controllers
             var book = new Book
             {
                 Title = bookDto.Title,
+                Year = bookDto.Year,
+                Rating = bookDto.Rating,
                 AuthorId = bookDto.AuthorId
             };
 

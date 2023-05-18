@@ -100,7 +100,48 @@ namespace NybookApi.Controllers
             });
         }
 
-        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAuthor(int id, AuthorDto authorDto)
+        {
+            if (id != authorDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var author = await _context.Authors.FindAsync(id);
+
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            author.Name = authorDto.Name;
+            author.Age = authorDto.Age;
+            author.Rating = authorDto.Rating;
+
+            _context.Entry(author).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AuthorExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
