@@ -203,6 +203,153 @@ namespace NybookApi.Controllers
             _context.Books.Add(book5);
             addedBookList.Add(book5);
 
+            Author author6 = new Author
+            {
+                Name = "Jane Austen",
+                Age = 41,
+                Rating = 4
+            };
+            _context.Authors.Add(author6);
+
+            Author author7 = new Author
+            {
+                Name = "F. Scott Fitzgerald",
+                Age = 44,
+                Rating = 4
+            };
+            _context.Authors.Add(author7);
+
+            Author author8 = new Author
+            {
+                Name = "Leo Tolstoy",
+                Age = 82,
+                Rating = 5
+            };
+            _context.Authors.Add(author8);
+
+            await _context.SaveChangesAsync();
+
+            Book book6 = new Book
+            {
+                Title = "Pride and Prejudice",
+                Year = 1813,
+                Rating = 4,
+                AuthorId = author6.Id,
+                Author = null
+            };
+            _context.Books.Add(book6);
+            addedBookList.Add(book6);
+
+            Book book7 = new Book
+            {
+                Title = "The Great Gatsby",
+                Year = 1925,
+                Rating = 5,
+                AuthorId = author7.Id,
+                Author = null
+            };
+            _context.Books.Add(book7);
+            addedBookList.Add(book7);
+
+            Book book8 = new Book
+            {
+                Title = "War and Peace",
+                Year = 1869,
+                Rating = 5,
+                AuthorId = author8.Id,
+                Author = null
+            };
+            _context.Books.Add(book8);
+            addedBookList.Add(book8);
+
+            Book book9 = new Book
+            {
+                Title = "Harry Potter and the Chamber of Secrets",
+                Year = 1998,
+                Rating = 5,
+                AuthorId = author1.Id,
+                Author = null
+            };
+            _context.Books.Add(book9);
+            addedBookList.Add(book9);
+
+            Book book10 = new Book
+            {
+                Title = "Harry Potter and the Prisoner of Azkaban",
+                Year = 1999,
+                Rating = 5,
+                AuthorId = author1.Id,
+                Author = null
+            };
+            _context.Books.Add(book10);
+            addedBookList.Add(book10);
+
+            Book book11 = new Book
+            {
+                Title = "It",
+                Year = 1986,
+                Rating = 5,
+                AuthorId = author2.Id,
+                Author = null
+            };
+            _context.Books.Add(book11);
+            addedBookList.Add(book11);
+
+            Book book12 = new Book
+            {
+                Title = "The Stand",
+                Year = 1978,
+                Rating = 4,
+                AuthorId = author2.Id,
+                Author = null
+            };
+            _context.Books.Add(book12);
+            addedBookList.Add(book12);
+
+            Book book13 = new Book
+            {
+                Title = "And Then There Were None",
+                Year = 1939,
+                Rating = 5,
+                AuthorId = author3.Id,
+                Author = null
+            };
+            _context.Books.Add(book13);
+            addedBookList.Add(book13);
+
+            Book book14 = new Book
+            {
+                Title = "The Murder of Roger Ackroyd",
+                Year = 1926,
+                Rating = 4,
+                AuthorId = author3.Id,
+                Author = null
+            };
+            _context.Books.Add(book14);
+            addedBookList.Add(book14);
+
+            Book book15 = new Book
+            {
+                Title = "Go Set a Watchman",
+                Year = 2015,
+                Rating = 3,
+                AuthorId = author4.Id,
+                Author = null
+            };
+            _context.Books.Add(book15);
+            addedBookList.Add(book15);
+
+            Book book16 = new Book
+            {
+                Title = "Animal Farm",
+                Year = 1945,
+                Rating = 4,
+                AuthorId = author5.Id,
+                Author = null
+            };
+            _context.Books.Add(book16);
+            addedBookList.Add(book16);
+
             await _context.SaveChangesAsync();
 
             var serializerOptions = new JsonSerializerOptions
