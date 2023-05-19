@@ -2,6 +2,8 @@
 
 Nybook is full stack application that allows authenticated user to register authors, books and assign books to their respective authors.
 
+[Nybook Client GitHub link](https://github.com/nyvia-projects/NybookClient)
+
 **Nybook Server** is configured to work with **SQL Server**. It has 2 Models with one-to-many relationship.
 
 Attributes of models and endpoints can be checked in **Swagger** by navigating to https://localhost:7064/swagger/index.html
